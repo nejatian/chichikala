@@ -5,12 +5,14 @@ import UserStore from "./store/UserStore";
 import jwt_decode from "jwt-decode";
 /* eslint-disable */
 class LoginForm extends Component {
+    
     constructor(props){
         super(props);
         this.state = {
             username:'',
             password:'',
             buttonDisabled:false
+            
         }
     }
     setInputValue(property, val){
@@ -22,14 +24,9 @@ class LoginForm extends Component {
             [property]: val 
         })     
     }
-    resetForm(){
-        this.setState(
-            username ='',
-            password ='',
-            buttonDisabled =false 
-        )
-    }
+   
     async doLogin(){
+        localStorage.clear();
         if(!this.state.username){
             return;
         }
@@ -55,6 +52,7 @@ class LoginForm extends Component {
         });
         let result = await res.json();
         if(result){
+            localStorage.clear();
             UserStore.isLoggedIn=true,
             UserStore.token=result.token;
             localStorage.setItem('token', result.token);
@@ -66,13 +64,13 @@ class LoginForm extends Component {
 
         }
         else if (result ===false){
-            this.resetForm();
+            console.log("e");
         }
 
         }
         catch(e){
             console.log(e);
-            this.resetForm();         
+                   
         }
     }
 

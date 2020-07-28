@@ -4,12 +4,47 @@ import { ProductConsumer } from "../context";
 import { ButtonContainer } from "./Button";
 import { Link } from "react-router-dom";
 export default class Modal extends Component {
+  state = {
+   
+    data:{}
+  };
+  componentDidMount() {
+    
+    const token =localStorage.getItem('token');
+    if (token){
+      const uuid =localStorage.getItem('UUID');
+      //make your api call here and and set the value in state
+       fetch('http://127.0.0.1:8080/api/admin/customer/level/'+uuid,{
+          method: 'get',
+          headers:{
+            'accept':'application/json',
+            'content-Type':'application/json',
+            'Authorization':'Bearer '+localStorage.getItem('token')
+          }
+         
+    
+        }).then(response => response.json()).then(data => {console.log(data)
+          this.setState({ data: data })
+        });
+       
+    }
+  }
   render() {
     return (
       <ProductConsumer>
         {value => {
           const { modalOpen, closeModal } = value;
-          const { img, title, price } = value.modalProduct;
+          let { img, title, price } = value.modalProduct;
+          const token =localStorage.getItem('token');
+          if (token){
+            const {data}= this.state;
+            let discount= data.rewardValue;
+            console.log(discount);
+            let newPrice= 0.0;
+            newPrice = (price * (1-discount)).toFixed(1);
+            price=newPrice;
+            console.log('in Modal',price)
+          }
           if (!modalOpen) {
             return null;
           } else {

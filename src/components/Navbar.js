@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Login from "../Login.svg";
+import Logout from "../Logout.svg";
 import { ButtonContainer } from "./Button";
 export default class Navbar extends Component {
   render() {
@@ -11,6 +12,9 @@ export default class Navbar extends Component {
 https://www.iconfinder.com/icons/1243707/access_login_register_signup_icon
 Creative Commons (Attribution 3.0 Unported);
 https://www.iconfinder.com/Makoto_msk */}
+        <Link to="/LogOut">
+          <img src={Logout} alt="store" className="navbar-brand" />
+        </Link>
         <Link to="/LoginForm">
           <img src={Login} alt="store" className="navbar-brand" />
         </Link>

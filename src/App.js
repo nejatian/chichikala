@@ -10,6 +10,7 @@ import Details from "./components/Details";
 import Default from "./components/Default";
 import Cart from "./components/Cart";
 import Modal from "./components/Modal";
+import Logout from "./LogOut"
 
 class App extends Component {
 
@@ -43,23 +44,14 @@ class App extends Component {
   
     
     
-         if(localStorage.getItem('token')===null){
-          return(
-                <div className="app">
-                  <div>
-                    <LoginForm/>
-                  </div>
         
-                </div>
-            )
-         }
-         else{
           return(
             <React.Fragment>
             <Navbar />
             <Switch>
               <Route exact path="/" component={ProductList} />
               <Route path="/LoginForm" component={LoginForm}/>
+              <Route path="/LogOut" component={Logout}/>
               <Route path="/details" component={Details} />
               <Route path="/cart" component={Cart} />
               <Route component={Default} />
@@ -68,7 +60,7 @@ class App extends Component {
           </React.Fragment>
            )
         
-         }
+        
         
     // else{
     //   console.log('UserStore.isLoggedIn2',UserStore.isLoggedIn);

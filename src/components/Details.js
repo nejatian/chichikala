@@ -3,7 +3,38 @@ import { ProductConsumer } from "../context";
 import { ButtonContainer } from "./Button";
 import { Link } from "react-router-dom";
 export default class Details extends Component {
+
+  async doGetLevel(uuid){
+    try{
+      let res = await fetch('http://127.0.0.1:8080/api/admin/customer/level/'+uuid,{
+      method: 'get',
+      headers:{
+        'accept':'application/json',
+        'content-Type':'application/json',
+        'Authorization':'Bearer '+localStorage.getItem('token')
+      }
+     
+
+    });
+    let result = await res.json();
+    let discountVal= 0.0;
+    console.log('res',result);
+    discountVal=result.rewardValue;
+    console.log('discountVal',discountVal);
+    localStorage.removeItem('discountVal');
+    localStorage.setItem('discountVal',discountVal);
+    console.log('localval',localStorage.getItem('discountVal'));
+
+  }
+  catch(e){
+    console.log(e);
+  }
+
+
+  }
+ 
   render() {
+   
     return (
       <ProductConsumer>
         {value => {

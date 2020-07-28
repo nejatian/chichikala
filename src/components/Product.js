@@ -5,20 +5,96 @@ import { ProductConsumer } from "../context";
 
 export default class Product extends Component {
   
- 
+  constructor(props){
+    super(props);
+    this.state = {
+      discountVal: 0.0,
+      price : 0,
+      data:{}
+
+        }
+}
+componentDidMount() {
+  const token =localStorage.getItem('token');
+  if (token){
+    const uuid =localStorage.getItem('UUID');
+    //make your api call here and and set the value in state
+     fetch('http://127.0.0.1:8080/api/admin/customer/level/'+uuid,{
+        method: 'get',
+        headers:{
+          'accept':'application/json',
+          'content-Type':'application/json',
+          'Authorization':'Bearer '+localStorage.getItem('token')
+        }
+       
+  
+      }).then(response => response.json()).then(data => {console.log(data)
+        this.setState({ data: data })
+      });
+     
+  
+  }
+  
+
+}
+
+  // async doGetLevel(uuid){
+  //   try{
+  //     let res = await fetch('http://127.0.0.1:8080/api/admin/customer/level/'+uuid,{
+  //     method: 'get',
+  //     headers:{
+  //       'accept':'application/json',
+  //       'content-Type':'application/json',
+  //       'Authorization':'Bearer '+localStorage.getItem('token')
+  //     }
+     
+
+  //   });
+  //   let result = await res.json();
+  //   let discountVal= 0.0;
+  //   console.log('res',result);
+  //   discountVal=result.rewardValue;
+  //   this.setState({discountVal:discountVal})
+  //   console.log('discountVal',discountVal);
+  //   // localStorage.removeItem('discountVal');
+  //   // localStorage.setItem('discountVal',discountVal);
+  //   // console.log('localval',localStorage.getItem('discountVal'));
+
+  // }
+  // catch(e){
+  //   console.log(e);
+  // }
+
+
+  // }
  
   render() {
     let { id, title, img, price, inCart } = this.props.product;
-    
+    console.log('this.props.product',this.props.product)
     const token =localStorage.getItem('token');
-    console.log('tokeninItem',token);
+  if (token){
+    const {data}= this.state;
+    let discount= data.rewardValue;
+    console.log(discount);
+    let newPrice= 0.0;
+    newPrice = (price * (1-discount)).toFixed(1);
+    price=newPrice;
+  }
+    // const token =localStorage.getItem('token');
+    // console.log('tokeninItem',token);
 
-    if(token !== null || token !==''){
-
-     const uuid =localStorage.getItem('UUID');
-       console.log('uuid in product',uuid)
-
-    }
+   
+    // if(token){
+    //   let newPrice= 0.0;
+    //   let discount= this.state.discountVal;
+    //   const uuid =localStorage.getItem('UUID');
+    //   console.log('uuid in producttttt',uuid);
+    //   this.doGetLevel(uuid);
+    //   newPrice = (price * (1-discount)).toFixed(1);
+    //   console.log('newPrice',newPrice);
+    //   price=newPrice;
+    
+    // }
     return (
       <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
         <div className="card">

@@ -4,6 +4,7 @@ export default class CartItem extends Component {
   
   render() {
     const { id, title, img, price, total, count } = this.props.item;
+
     const { increment, decrement, removeItem } = this.props.value;
 
     return (

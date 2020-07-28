@@ -11,10 +11,29 @@ class ProductProvider extends Component {
     modalProduct: detailProduct,
     cartSubTotal: 0,
     cartTax: 0,
-    cartTotal: 0
+    cartTotal: 0,
+    data:{}
   };
   componentDidMount() {
     this.setProducts();
+    const token =localStorage.getItem('token');
+    if (token){
+      const uuid =localStorage.getItem('UUID');
+      //make your api call here and and set the value in state
+       fetch('http://127.0.0.1:8080/api/admin/customer/level/'+uuid,{
+          method: 'get',
+          headers:{
+            'accept':'application/json',
+            'content-Type':'application/json',
+            'Authorization':'Bearer '+localStorage.getItem('token')
+          }
+         
+    
+        }).then(response => response.json()).then(data => {console.log(data)
+          this.setState({ data: data })
+        });
+       
+    }
   }
 
   setProducts = () => {
@@ -44,8 +63,28 @@ class ProductProvider extends Component {
     const product = tempProducts[index];
     product.inCart = true;
     product.count = 1;
-    const price = product.price;
+    const token =localStorage.getItem('token');
+    console.log('hereeee?')
+    let price = 0;
+    if (token){
+      
+    price=product.price;
+    const {data}= this.state;
+    let discount= data.rewardValue;
+    console.log(discount);
+    let newPrice= 0.0;
+    newPrice = (price * (1-discount)).toFixed(1);
+    price=newPrice;
+    console.log('in token',price)
+  }
+  if(!token){
+    console.log('not in token')
+  
+    price= product.price;
+  }
+  
     product.total = price;
+    
 
     this.setState(() => {
       return {
@@ -108,7 +147,8 @@ class ProductProvider extends Component {
     let subTotal = 0;
     this.state.cart.map(item => (subTotal += item.total));
     const tempTax = subTotal * 0.1;
-    const tax = parseFloat(tempTax.toFixed(2));
+   // const tax = parseFloat(tempTax.toFixed(2));
+    const tax = 0;
     const total = subTotal + tax;
     return {
       subTotal,
