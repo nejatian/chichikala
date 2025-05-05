@@ -12,7 +12,7 @@
     "react-async-script-loader": "^0.3.0",
     "react-dom": "^16.6.3",
     "react-paypal-express-checkout": "^1.0.5",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^7.5.2",
     "react-scripts": "^3.4.1",
     "styled-components": "^4.1.2"
   },
